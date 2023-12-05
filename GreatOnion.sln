@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreatOnion.Persistence", "G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{897EF8AB-B523-416F-9313-F78249FFD502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreatOnion.CoreMVC", "Presentation\GreatOnion.CoreMVC\GreatOnion.CoreMVC.csproj", "{FEC91157-3EBB-4EE7-9272-56FDA62693F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreatOnion.CoreMVC", "Presentation\GreatOnion.CoreMVC\GreatOnion.CoreMVC.csproj", "{FEC91157-3EBB-4EE7-9272-56FDA62693F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.DomainContracts", "Project.DomainContracts\Project.DomainContracts.csproj", "{BC64C6E3-0637-425E-B08E-142A22CAA350}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{FEC91157-3EBB-4EE7-9272-56FDA62693F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEC91157-3EBB-4EE7-9272-56FDA62693F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEC91157-3EBB-4EE7-9272-56FDA62693F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC64C6E3-0637-425E-B08E-142A22CAA350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC64C6E3-0637-425E-B08E-142A22CAA350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC64C6E3-0637-425E-B08E-142A22CAA350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC64C6E3-0637-425E-B08E-142A22CAA350}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{BBFB0207-857E-4017-B68E-C7931128B9E1} = {FBF9E22F-DBB7-44DB-97AC-B9E0834B7122}
 		{1923BA16-3F7F-43B8-9175-081D3EE1DCEB} = {FBF9E22F-DBB7-44DB-97AC-B9E0834B7122}
 		{FEC91157-3EBB-4EE7-9272-56FDA62693F2} = {897EF8AB-B523-416F-9313-F78249FFD502}
+		{BC64C6E3-0637-425E-B08E-142A22CAA350} = {B7715D32-01AA-4879-8D40-79A2315701BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F115E014-1F2F-4129-BB0F-AE9F6071052A}
