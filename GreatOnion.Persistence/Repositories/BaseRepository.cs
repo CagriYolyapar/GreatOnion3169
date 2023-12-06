@@ -48,8 +48,11 @@ namespace GreatOnion.Persistence.Repositories
 
         public async Task DeleteAsync(T item)
         {
-            T itemToBePassive = await FindAsync(item.ID);
-            _dbSet.Entry(itemToBePassive).CurrentValues.SetValues(item);
+            item.DeletedDate = DateTime.UtcNow;
+            item.Status = Domain.Enums.DataStatus.Deleted;
+            //T itemToBePassive = await FindAsync(item.ID);
+           //_dbSet.Entry(itemToBePassive).CurrentValues.SetValues(item);
+          
             await SaveAsync();
         }
 
@@ -117,7 +120,8 @@ namespace GreatOnion.Persistence.Repositories
         public async Task UpdateAsync(T item)
         {
 
-           
+            item.ModifiedDate = DateTime.UtcNow;
+            item.Status = Domain.Enums.DataStatus.Updated;
             T unmodifiedEntity = await FindAsync(item.ID);
             _dbSet.Entry(unmodifiedEntity).CurrentValues.SetValues(item);
             await SaveAsync();
