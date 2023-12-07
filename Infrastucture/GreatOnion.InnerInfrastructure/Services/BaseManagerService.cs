@@ -15,12 +15,16 @@ using System.Threading.Tasks;
 
 namespace GreatOnion.InnerInfrastructure.Services
 {
-    public class BaseManagerService<T> : IManagerService<T> where T : BaseDTO
+    public class BaseManagerService<T,U> : IManagerService<T> where T : BaseDTO where U:class,IEntity
     {
-        protected readonly IRepository<IEntity> _repository;
+
+        
+
+
+        protected readonly IRepository<U> _repository;
         protected readonly IMapper _mapper;
 
-        public BaseManagerService(IRepository<IEntity> repository, IMapper mapper)
+        public BaseManagerService(IRepository<U> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -33,14 +37,14 @@ namespace GreatOnion.InnerInfrastructure.Services
           
 
             //The item parameter will come as DTO...Implement your business logic in here then map the DTO to Entity...We will do it for all of our ManagerService classes
-            IEntity entity = _mapper.Map<IEntity>(item);
+            U entity = _mapper.Map<U>(item);
 
             await _repository.AddAsync(entity);
         }
 
         public async Task AddRangeAsync(List<T> list)
         {
-            List<IEntity> entityList = _mapper.Map<List<IEntity>>(list);
+            List<U> entityList = _mapper.Map<List<U>>(list);
             await _repository.AddRangeAsync(entityList);
 
         }
@@ -50,7 +54,7 @@ namespace GreatOnion.InnerInfrastructure.Services
             //Expression<Func<IEntity, bool>> newExp =  Expression.Lambda<Func<IEntity, bool>>(exp.Body);
             //Type dto = exp.Parameters[0].Type.GetType();
 
-            Expression<Func<IEntity, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, IEntity>(exp);
+            Expression<Func<U, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, U>(exp);
             return await _repository.AnyAsync(newExp);
         }
 
@@ -58,14 +62,14 @@ namespace GreatOnion.InnerInfrastructure.Services
         {
             item.DeletedDate = DateTime.Now;
             item.Status = Domain.Enums.DataStatus.Deleted;
-            IEntity entity = _mapper.Map<IEntity>(item);
+            U entity = _mapper.Map<U>(item);
             await _repository.DeleteAsync(entity);
         }
 
         public async Task DeleteRangeAsync(List<T> list)
         {
             //Business Logic for the mentioned collection(list) should be implemented here...That would not only seperate the concerns but also create a loosely coupling system to the Manager class...
-            List<IEntity> entities = _mapper.Map<List<IEntity>>(list);
+            List<U> entities = _mapper.Map<List<U>>(list);
             await _repository.DeleteRangeAsync(entities);
 
 
@@ -73,13 +77,13 @@ namespace GreatOnion.InnerInfrastructure.Services
 
         public async Task DestroyAsync(T item)
         {
-            IEntity entity = _mapper.Map<IEntity>(item);
+            U entity = _mapper.Map<U>(item);
             await _repository.DestroyAsync(entity);
         }
 
         public async Task DestroyRangeAsync(List<T> list)
         {
-            List<IEntity> entities = _mapper.Map<List<IEntity>>(list);
+            List<U> entities = _mapper.Map<List<U>>(list);
             await _repository.DestroyRangeAsync(entities);
         }
 
@@ -92,46 +96,46 @@ namespace GreatOnion.InnerInfrastructure.Services
 
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> exp)
         {
-            Expression<Func<IEntity, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, IEntity>(exp);
+            Expression<Func<U, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, U>(exp);
             IEntity foundEntity = await _repository.FirstOrDefaultAsync(newExp);
             return _mapper.Map<T>(foundEntity);
         }
 
         public async Task<List<T>> GetActivesAsync()
         {
-            List<IEntity> foundEntities = await _repository.GetActivesAsync();
+            List<U> foundEntities = await _repository.GetActivesAsync();
             return _mapper.Map<List<T>>(foundEntities);
         }
 
         public async Task<List<T>> GetAllAsync()
         {
-            List<IEntity> foundEntities = await _repository.GetAllAsync();
+            List<U> foundEntities = await _repository.GetAllAsync();
             return _mapper.Map<List<T>>(foundEntities);
         }
 
         public async Task<List<T>> GetModifiedsAsync()
         {
-            List<IEntity> foundEntities = await _repository.GetModifiedsAsync();
+            List<U> foundEntities = await _repository.GetModifiedsAsync();
             return _mapper.Map<List<T>>(foundEntities);
 
         }
 
         public async Task<List<T>> GetPassivesAsync()
         {
-            List<IEntity> foundEntities = await _repository.GetPassivesAsync();
+            List<U> foundEntities = await _repository.GetPassivesAsync();
             return _mapper.Map<List<T>>(foundEntities);
         }
 
         //Aslında DTO'ların tamamen sorumluluk olarak ayrılmaı bu metodun amacını işlevsiz hale getiriyor olabilir...Bunun bir düsünülmesi lazım...Kimse gidip de BaseManagerService'ten DTO dısında bir şey döndürmek istemez..Dolayısıyla buradaki X işlevini yitiriyor...Yine de iyi bir algoritma olduğu için burada bıraktım...Fakat mantık olarak düsünüldügünde kişi buradaki Select'ten istediği dönüşü alabilecek...Bunun Entity bile olması mümkün cünkü su anda bir güvenlik kısıtlaması yok...Lakin bu güvenlik kısıtlaması oldugunda da Sadece DTO'ya kısıtlanacagı icin sonucta bu Select mantıgını yitirmiş olur.
         public IQueryable<X> Select<X>(Expression<Func<T, X>> exp)
         {
-            Expression<Func<IEntity, X>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, IEntity, X>(exp);
+            Expression<Func<U, X>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, U, X>(exp);
             return _repository.Select(newExp);
         }
 
         public object Select(Expression<Func<T, object>> exp)
         {
-            Expression<Func<IEntity, object>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, IEntity>(exp);
+            Expression<Func<U, object>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, U>(exp);
             return _repository.Select(newExp);
         }
 
@@ -139,20 +143,20 @@ namespace GreatOnion.InnerInfrastructure.Services
         {
             item.ModifiedDate = DateTime.Now;
             item.Status = Domain.Enums.DataStatus.Updated;
-            IEntity entity = _mapper.Map<IEntity>(item);
+            U entity = _mapper.Map<U>(item);
             await _repository.UpdateAsync(entity);
         }
 
         public async Task UpdateRangeAsync(List<T> list)
         {
-            List<IEntity> foundEntities = _mapper.Map<List<IEntity>>(list);
+            List<U> foundEntities = _mapper.Map<List<U>>(list);
             await _repository.UpdateRangeAsync(foundEntities);
         }
 
         public async Task<IQueryable<T>> WhereAsync(Expression<Func<T, bool>> exp)
         {
-            Expression<Func<IEntity, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, IEntity>(exp);
-            List<IEntity> foundEntities = await _repository.WhereAsync(newExp);
+            Expression<Func<U, bool>> newExp = ExpressionVisitorHelper.ReplaceVisitor<T, U>(exp);
+            List<U> foundEntities = await _repository.WhereAsync(newExp);
             return _mapper.Map<List<T>>(foundEntities).AsQueryable();
 
 

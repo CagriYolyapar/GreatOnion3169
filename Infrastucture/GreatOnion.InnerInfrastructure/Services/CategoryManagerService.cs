@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace GreatOnion.InnerInfrastructure.Services
 {
-    public class CategoryManagerService : BaseManagerService<CategoryDTO>
+    public class CategoryManagerService : BaseManagerService<CategoryDTO,Category>
     {
         ICategoryRepository _categoryRepository;
-        public CategoryManagerService(ICategoryRepository categoryRepository,IMapper mapper,IRepository<IEntity> repository):base(repository,mapper)
+        public CategoryManagerService(ICategoryRepository categoryRepository,IMapper mapper):base(categoryRepository,mapper)
         {
             _categoryRepository = categoryRepository;
         }
